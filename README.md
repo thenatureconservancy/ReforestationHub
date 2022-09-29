@@ -8,11 +8,11 @@ Methods: See here for the original publication where these methods are described
 
 Scripts: Scripts are available on https://github.com/thenatureconservancy/ReforestationHub 
 
-Input Data: All input data are available in the folders "Raw Raster Data", "Raw Vector Data", "Other Data Inputs", and "CSV_Outputs" on this Google Drive Link: https://drive.google.com/drive/folders/1-bHpDBanaEr-jjShIB_jEtGQtXvcSkd_
+Input Data: All input data are available in the folders "Raw Raster Data", "Raw Vector Data", "Other Data Inputs", and "CSV_Outputs" on this Box Link: https://tnc.box.com/s/mr7udcsy5tycf0la7w9fe6vtg62aji9p
 
 Output Data: All output data created by these scripts can be downloaded from this Box Link: https://tnc.app.box.com/folder/162910047045
 
-Running the analysis: Everything needed to run the analysis, including data inputs and scripts, is in a zipped folder. The only thing that needs to be done to rerun the analysis is to change the working directory that is specified in each of the R scripts (this is set using the function setwd()). The R scripts will need to be run in increasing numeric order, with the exception of the scripts that have a name beginning with “0.0” (these scripts only contain functions. To run the analysis, this means you need to first run the scripts with a name starting “0.1”, then the scripts with a name starting “1.x” in increasing order (1.0, then 1.1, then 1.2), then the script with a name that starts “2.0”, and finally the script that starts “3.0”.
+Running the analysis: The R scripts will need to be run in increasing numeric order, with the exception of the scripts that have a name beginning with “0.0” (these scripts only contain functions. To run the analysis, this means you need to first run the scripts with a name starting “0.1”, then the scripts with a name starting “1.x” in increasing order (1.0, then 1.1, then 1.2), then the script with a name that starts “2.0”, and finally the script that starts “3.0”. 
 
 Modifying the reforestation opportunity: The main scripts (the ones with name that start “1.x”) has a few places where assumptions used in the analysis can be modified (e.g. to include different types of conservation corridors, different flood plain durations, different assumptions on sequestration duration, etc). These all appear in the first 200 lines of the file, and are heavily commented. More information on how to change assumptions in the analysis are below.
 
