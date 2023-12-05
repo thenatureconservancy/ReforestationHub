@@ -5,6 +5,7 @@
 # Mosaicing the reforestation opportunity tiles into CONUS rasters
 
 # Libraries
+
 library(raster)
 library(gdalUtils)
 library(rgdal)
@@ -16,19 +17,22 @@ library(fasterize)
 library(maps)
 library(OpenImageR)
 
-# Setting working directory
-setwd('/data/pubh-glob2loc/pubh0329/Reforestation_Hub')
-
 # Creating directory
-dir.create(paste0(getwd(),'/CONUS_Rasters'))
+# dir.create(paste0(getwd(),'/outputs/NY_Rasters'))
+tmp_dir <- tempdir(); tmp_dir # get path to temp dir
+
+# following command forces 'gdalUtils' to use GDAL installed in OSGeo
+ gdal_setInstallation("C:\\OSGeo4W\\bin", rescan = TRUE)
 
 # Raster types
 raster.types <- 
-  list.files(path = paste0(getwd(),'/Raster_Outputs')) %>%
+  list.files(path = paste0(getwd(),'/outputs/Raster_Outputs')) %>%
   gsub("_.*","",.) %>% unique(.)
 
 # Full list of raster tiles
-raster.tiles <- list.files(path = paste0(getwd(),'/Raster_Outputs'), full.names = TRUE)
+raster.tiles <- list.files(path = paste0(getwd(),'/outputs/Raster_Outputs'), full.names = TRUE)
+
+# r <- raster.types[17]
 
 # Function to do in parallel - can also run in a loop
 # Looping through raster types to make CONUS rasters
@@ -47,7 +51,7 @@ mosaicrasterfunction <- function(r) {
   raster.tiles.nondeducted <- raster.tiles.type[!grepl('ded',raster.tiles.type)]
   # And mosaicing
   mosaic_rasters(raster.tiles.nondeducted,
-                 dst_dataset = paste0(getwd(),'/CONUS_Rasters/CONUS_',r,'_opportunity_nondeducted.tif'),
+                 dst_dataset = paste0(getwd(),'/outputs/CONUS_Rasters/CONUS_',r,'_opportunity_nondeducted.tif'),
                  co = 'COMPRESS=DEFLATE',
                  pred=2,
                  zlevel=3)
@@ -61,8 +65,8 @@ mosaicrasterfunction <- function(r) {
   raster.tiles.deducted <- raster.tiles.type[grepl('ded',raster.tiles.type)]
   # And mosaicing
   if(length(raster.tiles.deducted)>0) { # Do not need to mosaic if there are no tiles - this happens for the land cover and land owner tiles, as the spatial patterning of these is identical regardless of whether the deductions are applied
-    mosaic_rasters(raster.tiles.type[!grepl('ded',raster.tiles.type)],
-                   dst_dataset = paste0(getwd(),'/CONUS_Rasters/CONUS_',r,'_opportunity_deducted.tif'),
+    mosaic_rasters(raster.tiles.deducted,
+                   dst_dataset = paste0(getwd(),'/outputs/CONUS_Rasters/CONUS_',r,'_opportunity_deducted.tif'),
                    co = 'COMPRESS=DEFLATE',
                    pred=2,
                    zlevel=3)
@@ -70,4 +74,4 @@ mosaicrasterfunction <- function(r) {
 }
 
 
-mclapply(raster.types,mosaicrasterfunction, mc.cores=10)
+mclapply(raster.types,mosaicrasterfunction, mc.cores=1)
